@@ -1,0 +1,51 @@
+// hsc-tracing/build.gradle
+// 分布式追踪组件
+
+plugins {
+    alias(libs.plugins.java.library)
+    alias(libs.plugins.groovy)
+    id 'maven-publish'
+}
+
+dependencies {
+    // 项目内部依赖
+    api project(':components:hsc-core')
+    
+    // Spring 依赖
+    api libs.spring.context
+    api libs.spring.beans
+    api libs.spring.web
+    
+    // 分布式追踪依赖
+    api libs.bundles.tracing
+    
+    // HTTP 客户端追踪
+    api libs.httpclient
+    
+    // 监控指标
+    api libs.bundles.monitoring
+    
+    // JSON 序列化
+    api libs.bundles.jackson
+    
+    // Groovy 支持
+    implementation libs.bundles.groovy.full
+    
+    // 测试依赖
+    testImplementation libs.bundles.testing
+    testImplementation libs.bundles.tracing.test
+}
+
+// 发布配置
+publishing {
+    publications {
+        maven(MavenPublication) {
+            from components.java
+            
+            pom {
+                name = 'HSC Tracing'
+                description = 'Handwritten Spring Cloud Distributed Tracing Components'
+            }
+        }
+    }
+}

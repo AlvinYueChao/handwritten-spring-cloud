@@ -36,6 +36,20 @@ snakeyaml = "2.3"
 commons-compress = "1.27.1"
 commons-codec = "1.17.1"
 
+# 熔断器相关版本
+resilience4j = "2.1.0"
+
+# 分布式追踪相关版本
+opentracing = "0.33.0"
+jaeger = "1.8.1"
+zipkin-brave = "5.15.1"
+zipkin-reporter = "2.16.4"
+httpclient = "4.5.14"
+
+# 监控指标版本
+micrometer-core = "1.11.5"
+micrometer-tracing = "1.1.6"
+
 [libraries]
 # Spring Boot
 spring-boot-starter = { module = "org.springframework.boot:spring-boot-starter", version.ref = "spring-boot" }
@@ -48,6 +62,8 @@ spring-boot-dependencies = { module = "org.springframework.boot:spring-boot-depe
 spring-webflux = { module = "org.springframework:spring-webflux", version.ref = "spring-webflux" }
 spring-context = { module = "org.springframework:spring-context", version.ref = "spring-webflux" }
 spring-beans = { module = "org.springframework:spring-beans", version.ref = "spring-webflux" }
+spring-aop = { module = "org.springframework:spring-aop", version.ref = "spring-webflux" }
+spring-web = { module = "org.springframework:spring-web", version.ref = "spring-webflux" }
 
 # Spring Cloud
 spring-cloud-starter-bootstrap = { module = "org.springframework.cloud:spring-cloud-starter-bootstrap", version = "4.1.4" }
@@ -63,6 +79,7 @@ netty-all = { module = "io.netty:netty-all", version.ref = "netty" }
 # 序列化
 jackson-core = { module = "com.fasterxml.jackson.core:jackson-core", version.ref = "jackson" }
 jackson-databind = { module = "com.fasterxml.jackson.core:jackson-databind", version.ref = "jackson" }
+jackson-annotations = { module = "com.fasterxml.jackson.core:jackson-annotations", version.ref = "jackson" }
 
 # 日志
 slf4j-api = { module = "org.slf4j:slf4j-api", version.ref = "slf4j" }
@@ -78,6 +95,24 @@ snakeyaml = { module = "org.yaml:snakeyaml", version.ref = "snakeyaml" }
 commons-compress = { module = "org.apache.commons:commons-compress", version.ref = "commons-compress" }
 commons-codec = { module = "commons-codec:commons-codec", version.ref = "commons-codec" }
 
+# 熔断器相关库
+resilience4j-circuitbreaker = { module = "io.github.resilience4j:resilience4j-circuitbreaker", version.ref = "resilience4j" }
+resilience4j-spring-boot3 = { module = "io.github.resilience4j:resilience4j-spring-boot3", version.ref = "resilience4j" }
+resilience4j-test = { module = "io.github.resilience4j:resilience4j-test", version.ref = "resilience4j" }
+
+# 分布式追踪相关库
+opentracing-api = { module = "io.opentracing:opentracing-api", version.ref = "opentracing" }
+opentracing-util = { module = "io.opentracing:opentracing-util", version.ref = "opentracing" }
+opentracing-mock = { module = "io.opentracing:opentracing-mock", version.ref = "opentracing" }
+jaeger-client = { module = "io.jaegertracing:jaeger-client", version.ref = "jaeger" }
+zipkin-brave = { module = "io.zipkin.brave:brave", version.ref = "zipkin-brave" }
+zipkin-reporter = { module = "io.zipkin.reporter2:zipkin-reporter", version.ref = "zipkin-reporter" }
+httpclient = { module = "org.apache.httpcomponents:httpclient", version.ref = "httpclient" }
+
+# 监控指标库
+micrometer-core = { module = "io.micrometer:micrometer-core", version.ref = "micrometer-core" }
+micrometer-tracing = { module = "io.micrometer:micrometer-tracing", version.ref = "micrometer-tracing" }
+
 [bundles]
 # 常用依赖组合
 spring-boot-web = ["spring-boot-starter-web", "spring-webflux"]
@@ -85,7 +120,18 @@ spring-boot-webflux = ["spring-boot-starter-webflux", "reactor-netty"]
 groovy-full = ["groovy-core", "groovy-json"]
 testing = ["spring-boot-starter-test", "spock-core", "spock-spring"]
 logging = ["slf4j-api", "logback-classic"]
-jackson = ["jackson-core", "jackson-databind"]
+jackson = ["jackson-core", "jackson-databind", "jackson-annotations"]
+
+# 熔断器依赖组合
+circuitbreaker = ["resilience4j-circuitbreaker", "resilience4j-spring-boot3"]
+circuitbreaker-test = ["resilience4j-test"]
+
+# 分布式追踪依赖组合
+tracing = ["opentracing-api", "opentracing-util", "jaeger-client", "zipkin-brave", "zipkin-reporter"]
+tracing-test = ["opentracing-mock"]
+
+# 监控指标依赖组合
+monitoring = ["micrometer-core", "micrometer-tracing"]
 
 [plugins]
 # 插件版本管理
