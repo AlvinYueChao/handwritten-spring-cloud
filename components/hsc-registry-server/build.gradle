@@ -14,6 +14,7 @@ dependencies {
     
     // Spring Boot Web
     implementation libs.bundles.spring.boot.web
+    implementation libs.spring.boot.starter.validation
     
     // 网络通信
     implementation libs.bundles.spring.boot.webflux

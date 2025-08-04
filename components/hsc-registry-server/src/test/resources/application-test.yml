@@ -1,0 +1,26 @@
+server:
+  port: 0
+
+spring:
+  application:
+    name: hsc-registry-server-test
+  main:
+    allow-bean-definition-overriding: true
+
+hsc:
+  registry:
+    server:
+      port: 0
+      cluster:
+        enabled: false
+      health-check:
+        enabled: false
+      security:
+        enabled: false
+      monitoring:
+        metrics-enabled: false
+
+logging:
+  level:
+    io.github.alvin.hsc.registry.server: INFO
+    org.springframework: WARN
