@@ -11,7 +11,9 @@ include(
         ':components:hsc-rpc',
         ':components:hsc-config-client',
         ':components:hsc-config-server',
-        ':components:hsc-gateway'
+        ':components:hsc-gateway',
+        ':components:hsc-circuitbreaker',
+        ':components:hsc-tracing'
 )
 
 // 包含示例应用

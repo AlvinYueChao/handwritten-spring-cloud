@@ -19,14 +19,14 @@ allprojects {
     configurations.configureEach {
         resolutionStrategy {
             // 强制使用安全版本的依赖
-            force 'org.yaml:snakeyaml:2.3'
-            force 'org.apache.commons:commons-compress:1.27.1'
-            force 'commons-codec:commons-codec:1.17.1'
-            force 'com.fasterxml.jackson.core:jackson-core:2.18.2'
-            force 'com.fasterxml.jackson.core:jackson-databind:2.18.2'
-            force 'com.fasterxml.jackson.core:jackson-annotations:2.18.2'
-            force 'org.slf4j:slf4j-api:2.0.16'
-            force 'ch.qos.logback:logback-classic:1.5.12'
+            force libs.snakeyaml.get()
+            force libs.commons.compress.get()
+            force libs.commons.codec.get()
+            force libs.jackson.core.get()
+            force libs.jackson.databind.get()
+            force libs.jackson.annotations.get()
+            force libs.slf4j.api.get()
+            force libs.logback.classic.get()
         }
     }
 }
