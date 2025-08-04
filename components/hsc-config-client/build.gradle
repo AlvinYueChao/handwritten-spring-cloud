@@ -1,0 +1,43 @@
+// hsc-config-client/build.gradle
+// 配置中心客户端
+
+plugins {
+    alias(libs.plugins.java.library)
+    alias(libs.plugins.groovy)
+    id 'maven-publish'
+}
+
+dependencies {
+    // 项目内部依赖
+    api project(':components:hsc-core')
+    
+    // Spring 依赖
+    api libs.spring.context
+    api libs.spring.webflux
+    
+    // Spring Cloud Bootstrap
+    api libs.spring.cloud.starter.bootstrap
+    
+    // 网络通信
+    implementation libs.reactor.netty
+    
+    // Groovy 支持
+    implementation libs.bundles.groovy.full
+    
+    // 测试依赖
+    testImplementation libs.bundles.testing
+}
+
+// 发布配置
+publishing {
+    publications {
+        maven(MavenPublication) {
+            from components.java
+            
+            pom {
+                name = 'HSC Config Client'
+                description = 'Handwritten Spring Cloud Config Client'
+            }
+        }
+    }
+}

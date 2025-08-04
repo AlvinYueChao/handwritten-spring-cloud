@@ -1,0 +1,32 @@
+// hsc-gateway/build.gradle
+// API 网关组件
+
+plugins {
+    alias(libs.plugins.java.library)
+    alias(libs.plugins.groovy)
+    alias(libs.plugins.spring.boot)
+    alias(libs.plugins.spring.dependency.management)
+}
+
+dependencies {
+    // 项目内部依赖
+    implementation project(':components:hsc-core')
+    implementation project(':components:hsc-registry-client')
+    
+    // Spring Boot WebFlux (网关基于响应式)
+    implementation libs.bundles.spring.boot.webflux
+    
+    // 网络通信
+    implementation libs.reactor.netty
+    
+    // Groovy 支持
+    implementation libs.bundles.groovy.full
+    
+    // 测试依赖
+    testImplementation libs.bundles.testing
+}
+
+// Spring Boot 应用配置
+springBoot {
+    mainClass = 'io.github.alvin.hsc.gateway.GatewayApplication'
+}

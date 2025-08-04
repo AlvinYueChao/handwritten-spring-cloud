@@ -1,0 +1,31 @@
+// hsc-config-server/build.gradle
+// 配置中心服务端
+
+plugins {
+    alias(libs.plugins.java.library)
+    alias(libs.plugins.groovy)
+    alias(libs.plugins.spring.boot)
+    alias(libs.plugins.spring.dependency.management)
+}
+
+dependencies {
+    // 项目内部依赖
+    implementation project(':components:hsc-core')
+    
+    // Spring Boot Web
+    implementation libs.bundles.spring.boot.web
+    
+    // 网络通信
+    implementation libs.bundles.spring.boot.webflux
+    
+    // Groovy 支持
+    implementation libs.bundles.groovy.full
+    
+    // 测试依赖
+    testImplementation libs.bundles.testing
+}
+
+// Spring Boot 应用配置
+springBoot {
+    mainClass = 'io.github.alvin.hsc.config.server.ConfigServerApplication'
+}

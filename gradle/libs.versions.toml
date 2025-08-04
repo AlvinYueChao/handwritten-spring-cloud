@@ -1,0 +1,96 @@
+# Gradle Version Catalog
+# 集中管理项目依赖版本
+
+[versions]
+# 项目版本
+project = "0.1.0-SNAPSHOT"
+
+# 核心框架版本 - 更新到最新安全版本
+spring-boot = "3.4.1"
+spring-dependency-management = "1.1.7"
+spring-cloud = "2023.0.4"
+spring-webflux = "6.2.1"
+
+# Java 版本
+java = "21"
+groovy = "4.0.23"
+
+# 测试框架版本
+spock = "2.4-M4-groovy-4.0"
+junit = "5.11.4"
+
+# 网络和通信 - 修复高危漏洞
+reactor-netty = "1.1.25"
+netty = "4.1.118.Final"
+
+# 序列化和工具 - 修复Jackson高危漏洞
+jackson = "2.18.2"
+slf4j = "2.0.16"
+logback = "1.5.12"
+
+# 构建工具版本
+gradle = "8.10"
+
+# 安全相关版本
+snakeyaml = "2.3"
+commons-compress = "1.27.1"
+commons-codec = "1.17.1"
+
+[libraries]
+# Spring Boot
+spring-boot-starter = { module = "org.springframework.boot:spring-boot-starter", version.ref = "spring-boot" }
+spring-boot-starter-web = { module = "org.springframework.boot:spring-boot-starter-web", version.ref = "spring-boot" }
+spring-boot-starter-webflux = { module = "org.springframework.boot:spring-boot-starter-webflux", version.ref = "spring-boot" }
+spring-boot-starter-test = { module = "org.springframework.boot:spring-boot-starter-test", version.ref = "spring-boot" }
+spring-boot-dependencies = { module = "org.springframework.boot:spring-boot-dependencies", version.ref = "spring-boot" }
+
+# Spring Framework
+spring-webflux = { module = "org.springframework:spring-webflux", version.ref = "spring-webflux" }
+spring-context = { module = "org.springframework:spring-context", version.ref = "spring-webflux" }
+spring-beans = { module = "org.springframework:spring-beans", version.ref = "spring-webflux" }
+
+# Spring Cloud
+spring-cloud-starter-bootstrap = { module = "org.springframework.cloud:spring-cloud-starter-bootstrap", version = "4.1.4" }
+
+# Groovy
+groovy-core = { module = "org.apache.groovy:groovy", version.ref = "groovy" }
+groovy-json = { module = "org.apache.groovy:groovy-json", version.ref = "groovy" }
+
+# 网络通信
+reactor-netty = { module = "io.projectreactor.netty:reactor-netty", version.ref = "reactor-netty" }
+netty-all = { module = "io.netty:netty-all", version.ref = "netty" }
+
+# 序列化
+jackson-core = { module = "com.fasterxml.jackson.core:jackson-core", version.ref = "jackson" }
+jackson-databind = { module = "com.fasterxml.jackson.core:jackson-databind", version.ref = "jackson" }
+
+# 日志
+slf4j-api = { module = "org.slf4j:slf4j-api", version.ref = "slf4j" }
+logback-classic = { module = "ch.qos.logback:logback-classic", version.ref = "logback" }
+
+# 测试
+spock-core = { module = "org.spockframework:spock-core", version.ref = "spock" }
+spock-spring = { module = "org.spockframework:spock-spring", version.ref = "spock" }
+junit-jupiter = { module = "org.junit.jupiter:junit-jupiter", version.ref = "junit" }
+
+# 安全相关库
+snakeyaml = { module = "org.yaml:snakeyaml", version.ref = "snakeyaml" }
+commons-compress = { module = "org.apache.commons:commons-compress", version.ref = "commons-compress" }
+commons-codec = { module = "commons-codec:commons-codec", version.ref = "commons-codec" }
+
+[bundles]
+# 常用依赖组合
+spring-boot-web = ["spring-boot-starter-web", "spring-webflux"]
+spring-boot-webflux = ["spring-boot-starter-webflux", "reactor-netty"]
+groovy-full = ["groovy-core", "groovy-json"]
+testing = ["spring-boot-starter-test", "spock-core", "spock-spring"]
+logging = ["slf4j-api", "logback-classic"]
+jackson = ["jackson-core", "jackson-databind"]
+
+[plugins]
+# 插件版本管理
+spring-boot = { id = "org.springframework.boot", version.ref = "spring-boot" }
+spring-dependency-management = { id = "io.spring.dependency-management", version.ref = "spring-dependency-management" }
+java-library = { id = "java-library" }
+groovy = { id = "groovy" }
+dependency-check = { id = "org.owasp.dependencycheck", version = "11.1.0" }

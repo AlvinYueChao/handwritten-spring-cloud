@@ -1,0 +1,68 @@
+// build.gradle
+plugins {
+    alias(libs.plugins.groovy)
+    alias(libs.plugins.spring.boot) apply false
+    alias(libs.plugins.spring.dependency.management) apply false
+    alias(libs.plugins.dependency.check) apply false
+}
+
+allprojects {
+    group = 'io.github.alvin.hsc'
+    version = libs.versions.project.get()
+
+    repositories {
+        mavenCentral()
+        gradlePluginPortal()
+    }
+    
+    // 配置依赖解析策略，强制使用安全版本
+    configurations.configureEach {
+        resolutionStrategy {
+            // 强制使用安全版本的依赖
+            force 'org.yaml:snakeyaml:2.3'
+            force 'org.apache.commons:commons-compress:1.27.1'
+            force 'commons-codec:commons-codec:1.17.1'
+            force 'com.fasterxml.jackson.core:jackson-core:2.18.2'
+            force 'com.fasterxml.jackson.core:jackson-databind:2.18.2'
+            force 'com.fasterxml.jackson.core:jackson-annotations:2.18.2'
+            force 'org.slf4j:slf4j-api:2.0.16'
+            force 'ch.qos.logback:logback-classic:1.5.12'
+        }
+    }
+}
+
+// Wrapper task configuration
+wrapper {
+    gradleVersion = libs.versions.gradle.get()
+    distributionType = Wrapper.DistributionType.BIN
+}
+
+subprojects {
+    // Skip applying java-library plugin to BOM project since it uses java-platform
+    if (project.name != 'bom') {
+        apply plugin: 'groovy'
+        apply plugin: 'java-library' // Use java-library for api/implementation configurations
+        apply plugin: 'org.owasp.dependencycheck'
+
+        java {
+            sourceCompatibility = JavaVersion.VERSION_21
+            targetCompatibility = JavaVersion.VERSION_21
+        }
+
+        // 依赖检查配置
+        dependencyCheck {
+            failBuildOnCVSS = 7.0
+            suppressionFile = "${rootProject.projectDir}/dependency-check-suppressions.xml"
+            analyzers {
+                assemblyEnabled = false
+                nuspecEnabled = false
+                nugetconfEnabled = false
+            }
+        }
+
+        // 基础依赖在各个子项目的 build.gradle 中单独配置
+        test {
+            useJUnitPlatform()
+        }
+    }
+}

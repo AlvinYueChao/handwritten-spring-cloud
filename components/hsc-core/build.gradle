@@ -1,0 +1,45 @@
+// hsc-core/build.gradle
+// 核心组件模块
+
+plugins {
+    alias(libs.plugins.java.library)
+    alias(libs.plugins.groovy)
+    id 'maven-publish'
+}
+
+dependencies {
+    // Spring 核心依赖
+    api libs.spring.context
+    api libs.spring.beans
+    
+    // Groovy 支持
+    api libs.bundles.groovy.full
+    
+    // 日志
+    api libs.bundles.logging
+    
+    // JSON 序列化
+    api libs.bundles.jackson
+    
+    // 安全相关依赖 - 强制使用安全版本
+    api libs.snakeyaml
+    api libs.commons.compress
+    api libs.commons.codec
+    
+    // 测试依赖
+    testImplementation libs.bundles.testing
+}
+
+// 发布配置
+publishing {
+    publications {
+        maven(MavenPublication) {
+            from components.java
+            
+            pom {
+                name = 'HSC Core'
+                description = 'Handwritten Spring Cloud Core Components'
+            }
+        }
+    }
+}

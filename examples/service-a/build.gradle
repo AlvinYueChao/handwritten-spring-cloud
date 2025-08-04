@@ -1,0 +1,34 @@
+// examples/service-a/build.gradle
+// 示例服务 A
+
+plugins {
+    alias(libs.plugins.java.library)
+    alias(libs.plugins.groovy)
+    alias(libs.plugins.spring.boot)
+    alias(libs.plugins.spring.dependency.management)
+}
+
+dependencies {
+    // 使用 BOM 管理版本
+    implementation platform(project(':bom'))
+    
+    // 项目内部依赖
+    implementation project(':components:hsc-core')
+    implementation project(':components:hsc-registry-client')
+    implementation project(':components:hsc-config-client')
+    implementation project(':components:hsc-rpc')
+    
+    // Spring Boot Web
+    implementation libs.bundles.spring.boot.web
+    
+    // Groovy 支持
+    implementation libs.bundles.groovy.full
+    
+    // 测试依赖
+    testImplementation libs.bundles.testing
+}
+
+// Spring Boot 应用配置
+springBoot {
+    mainClass = 'io.github.alvin.hsc.examples.servicea.ServiceAApplication'
+}

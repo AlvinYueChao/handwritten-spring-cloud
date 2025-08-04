@@ -1,0 +1,43 @@
+// hsc-rpc/build.gradle
+// RPC 通信组件
+
+plugins {
+    alias(libs.plugins.java.library)
+    alias(libs.plugins.groovy)
+    id 'maven-publish'
+}
+
+dependencies {
+    // 项目内部依赖
+    api project(':components:hsc-core')
+    
+    // 网络通信
+    api libs.reactor.netty
+    api libs.netty.all
+    
+    // Spring 依赖
+    api libs.spring.context
+    
+    // JSON 序列化
+    api libs.bundles.jackson
+    
+    // Groovy 支持
+    implementation libs.bundles.groovy.full
+    
+    // 测试依赖
+    testImplementation libs.bundles.testing
+}
+
+// 发布配置
+publishing {
+    publications {
+        maven(MavenPublication) {
+            from components.java
+            
+            pom {
+                name = 'HSC RPC'
+                description = 'Handwritten Spring Cloud RPC Components'
+            }
+        }
+    }
+}

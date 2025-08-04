@@ -1,0 +1,40 @@
+// hsc-registry-client/build.gradle
+// 服务注册中心客户端
+
+plugins {
+    alias(libs.plugins.java.library)
+    alias(libs.plugins.groovy)
+    id 'maven-publish'
+}
+
+dependencies {
+    // 项目内部依赖
+    api project(':components:hsc-core')
+    
+    // Spring 依赖
+    api libs.spring.context
+    api libs.spring.webflux
+    
+    // 网络通信
+    api libs.reactor.netty
+    
+    // Groovy 支持
+    implementation libs.bundles.groovy.full
+    
+    // 测试依赖
+    testImplementation libs.bundles.testing
+}
+
+// 发布配置
+publishing {
+    publications {
+        maven(MavenPublication) {
+            from components.java
+            
+            pom {
+                name = 'HSC Registry Client'
+                description = 'Handwritten Spring Cloud Registry Client'
+            }
+        }
+    }
+}

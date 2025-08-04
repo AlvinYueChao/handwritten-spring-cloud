@@ -1,0 +1,30 @@
+// bom/build.gradle
+plugins {
+    id 'java-platform'
+}
+
+javaPlatform {
+    allowDependencies()
+}
+
+dependencies {
+    api platform(libs.spring.boot.dependencies)
+
+    // Define versions for our own framework libraries
+    api project(':components:hsc-core')
+    api project(':components:hsc-registry-client')
+    api project(':components:hsc-rpc')
+    api project(':components:hsc-config-client')
+    // Add other client-facing modules here
+
+    constraints {
+        // Define versions for common third-party libraries using catalog
+        api libs.spring.cloud.starter.bootstrap
+        api libs.reactor.netty
+        api libs.spring.webflux
+        api libs.groovy.core
+        api libs.jackson.core
+        api libs.jackson.databind
+        api libs.netty.all
+    }
+}
