@@ -1,0 +1,51 @@
+server:
+  port: 8761
+
+spring:
+  application:
+    name: hsc-registry-server
+  webflux:
+    base-path: /
+  main:
+    allow-bean-definition-overriding: true
+
+hsc:
+  registry:
+    server:
+      port: 8761
+      context-path: /
+      cluster:
+        enabled: false
+        nodes: []
+        sync-interval: 30s
+      health-check:
+        enabled: true
+        default-interval: 30s
+        default-timeout: 5s
+        max-retry: 3
+      storage:
+        type: memory
+        eviction-interval: 60s
+      security:
+        enabled: false
+        username: admin
+        password: admin
+      monitoring:
+        metrics-enabled: true
+        health-endpoint: /actuator/health
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics
+  endpoint:
+    health:
+      show-details: always
+
+logging:
+  level:
+    io.github.alvin.hsc.registry.server: DEBUG
+    org.springframework.web: DEBUG
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n"
