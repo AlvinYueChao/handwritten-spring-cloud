@@ -50,6 +50,9 @@ httpclient = "4.5.14"
 micrometer-core = "1.11.5"
 micrometer-tracing = "1.1.6"
 
+# AspectJ 版本
+aspectj = "1.9.19"
+
 [libraries]
 # Spring Boot
 spring-boot-starter = { module = "org.springframework.boot:spring-boot-starter", version.ref = "spring-boot" }
@@ -113,6 +116,10 @@ httpclient = { module = "org.apache.httpcomponents:httpclient", version.ref = "h
 micrometer-core = { module = "io.micrometer:micrometer-core", version.ref = "micrometer-core" }
 micrometer-tracing = { module = "io.micrometer:micrometer-tracing", version.ref = "micrometer-tracing" }
 
+# AspectJ 库
+aspectj-weaver = { module = "org.aspectj:aspectjweaver", version.ref = "aspectj" }
+aspectj-rt = { module = "org.aspectj:aspectjrt", version.ref = "aspectj" }
+
 [bundles]
 # 常用依赖组合
 spring-boot-web = ["spring-boot-starter-web", "spring-webflux"]
@@ -132,6 +139,9 @@ tracing-test = ["opentracing-mock"]
 
 # 监控指标依赖组合
 monitoring = ["micrometer-core", "micrometer-tracing"]
+
+# AspectJ 依赖组合
+aspectj = ["aspectj-weaver", "aspectj-rt"]
 
 [plugins]
 # 插件版本管理

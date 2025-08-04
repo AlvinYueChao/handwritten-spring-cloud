@@ -16,6 +16,9 @@ dependencies {
     api libs.spring.beans
     api libs.spring.web
     
+    // AspectJ 依赖
+    api libs.bundles.aspectj
+    
     // 分布式追踪依赖
     api libs.bundles.tracing
     

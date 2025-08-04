@@ -16,6 +16,9 @@ dependencies {
     api libs.spring.beans
     api libs.spring.aop
     
+    // AspectJ 依赖
+    api libs.bundles.aspectj
+    
     // 熔断器相关依赖
     api libs.bundles.circuitbreaker
     
