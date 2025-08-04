@@ -1,6 +1,9 @@
 package io.github.alvin.hsc.registry.server.model;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 import java.time.Duration;
 
@@ -14,10 +17,20 @@ import java.time.Duration;
 public class HealthCheckConfig {
 
     private boolean enabled = true;
+    
+    @NotBlank(message = "Health check path cannot be blank")
     private String path = "/actuator/health";
+    
+    @NotNull(message = "Health check interval cannot be null")
     private Duration interval = Duration.ofSeconds(30);
+    
+    @NotNull(message = "Health check timeout cannot be null")
     private Duration timeout = Duration.ofSeconds(5);
+    
+    @Min(value = 1, message = "Retry count must be at least 1")
     private int retryCount = 3;
+    
+    @NotNull(message = "Health check type cannot be null")
     private HealthCheckType type = HealthCheckType.HTTP;
 
     // Constructors
