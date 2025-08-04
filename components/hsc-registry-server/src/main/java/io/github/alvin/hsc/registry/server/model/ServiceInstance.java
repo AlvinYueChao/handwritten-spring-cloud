@@ -2,6 +2,10 @@ package io.github.alvin.hsc.registry.server.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 
 import java.time.Instant;
 import java.util.Map;
@@ -15,13 +19,27 @@ import java.util.Map;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class ServiceInstance {
 
+    @NotBlank(message = "Service ID cannot be blank")
     private String serviceId;
+    
+    @NotBlank(message = "Instance ID cannot be blank")
     private String instanceId;
+    
+    @NotBlank(message = "Host cannot be blank")
     private String host;
+    
+    @NotNull(message = "Port cannot be null")
+    @Positive(message = "Port must be positive")
     private int port;
+    
     private boolean secure;
+    
+    @NotNull(message = "Status cannot be null")
     private InstanceStatus status;
+    
     private Map<String, String> metadata;
+    
+    @Valid
     private HealthCheckConfig healthCheck;
     
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", timezone = "UTC")

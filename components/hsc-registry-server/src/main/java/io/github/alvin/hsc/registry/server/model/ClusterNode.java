@@ -2,6 +2,9 @@ package io.github.alvin.hsc.registry.server.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 
 import java.time.Instant;
 import java.util.Map;
@@ -15,9 +18,17 @@ import java.util.Map;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class ClusterNode {
 
+    @NotBlank(message = "Node ID cannot be blank")
     private String nodeId;
+    
+    @NotBlank(message = "Host cannot be blank")
     private String host;
+    
+    @NotNull(message = "Port cannot be null")
+    @Positive(message = "Port must be positive")
     private int port;
+    
+    @NotNull(message = "Status cannot be null")
     private NodeStatus status;
     
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", timezone = "UTC")
