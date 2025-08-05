@@ -17,7 +17,7 @@ public enum InstanceStatus {
     UP,
     
     /**
-     * 实例不健康
+     * 实例不健康，实例可能正在重启、网络抖动等，还有恢复的可能
      */
     DOWN,
     
@@ -27,7 +27,7 @@ public enum InstanceStatus {
     STARTING,
     
     /**
-     * 实例未知状态
+     * 实例未知状态，实例可能已经彻底宕机或网络完全断开，需要人工干预
      */
     UNKNOWN,
     
@@ -43,6 +43,7 @@ public enum InstanceStatus {
      * @return 是否可以转换
      */
     public boolean canTransitionTo(InstanceStatus targetStatus) {
+        // 允许相同状态间的转换，即服务实例刚注册时，允许 STARTING -> STARTING。其他状态同理
         if (this == targetStatus) {
             return true;
         }
