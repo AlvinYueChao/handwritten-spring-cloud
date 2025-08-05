@@ -4,7 +4,7 @@ import io.github.alvin.hsc.registry.server.model.ServiceInstance;
 import io.github.alvin.hsc.registry.server.model.InstanceStatus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
 import java.time.Duration;
 import java.time.Instant;
@@ -26,10 +26,11 @@ import java.util.stream.Collectors;
  * - 自动过期清理机制
  * - 高性能的读写操作
  * - 完整的统计信息支持
+ * - 健康状态监控和生命周期管理
  * 
  * @author Alvin
  */
-@Component
+@Repository
 public class MemoryRegistryStorage implements RegistryStorage {
     
     private static final Logger logger = LoggerFactory.getLogger(MemoryRegistryStorage.class);
