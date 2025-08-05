@@ -170,21 +170,28 @@ public class InstanceLifecycleManager {
         
         return timeSinceLastHeartbeat.compareTo(timeout) > 0;
     }
-    
-    /**
-     * 处理心跳超时的实例
-     * 
-     * @param instance 服务实例
-     */
-    public void handleHeartbeatTimeout(ServiceInstance instance) {
+
+  /**
+   * 处理心跳超时的实例
+   * <br>
+   * 容错考虑:
+   * <p>1. 避免因为短暂的网络问题就将实例标记为 UNKNOWN</p>
+   * <p>2. 给实例更多时间来恢复连接</p>
+   * <p>3. 区分临时故障和永久故障</p>
+   * </br>
+   *
+   * @param instance 服务实例
+   */
+  public void handleHeartbeatTimeout(ServiceInstance instance) {
         if (instance == null) {
             return;
         }
-        
+
+        // 第一层：正常超时 -> DOWN
         if (instance.getStatus() == InstanceStatus.UP) {
             updateInstanceStatus(instance, InstanceStatus.DOWN, "Heartbeat timeout");
         } else if (instance.getStatus() == InstanceStatus.DOWN) {
-            // 如果已经是 DOWN 状态，且长时间没有心跳，则标记为 UNKNOWN
+            // 第二层：如果已经是 DOWN 状态，且长时间超时 -> UNKNOWN
             Duration timeSinceLastHeartbeat = Duration.between(instance.getLastHeartbeat(), Instant.now());
             if (timeSinceLastHeartbeat.compareTo(DEFAULT_HEARTBEAT_TIMEOUT.multipliedBy(2)) > 0) {
                 updateInstanceStatus(instance, InstanceStatus.UNKNOWN, "Long time no heartbeat");
