@@ -30,9 +30,19 @@ hsc:
       cluster:
         enabled: false
         
-      # 安全配置（测试环境禁用）
+      # 安全配置（测试环境启用）
       security:
-        enabled: false
+        enabled: true
+        api-key: test-integration-key-2024
+        header-name: X-Registry-API-Key
+        query-param-name: api_key
+        public-paths:
+          - /actuator/health
+          - /actuator/info
+          - /actuator/prometheus
+          - /management/info
+        auth-error-code: AUTH_001
+        auth-error-message: API key authentication required
         
       # 监控配置
       monitoring:

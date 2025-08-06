@@ -66,7 +66,7 @@ public class GlobalExceptionHandler {
                 "VALIDATION_001",
                 "Request parameter validation failed",
                 Instant.now().toString(),
-                ex.getParameter() != null ? ex.getParameter().toString() : "unknown",
+                ex.getParameter().toString(),
                 details
         );
         
@@ -142,7 +142,7 @@ public class GlobalExceptionHandler {
                 Map.of("serviceId", ex.getServiceId(), "instanceId", ex.getInstanceId())
         );
         
-        return ResponseEntity.notFound().build();
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
     }
 
     /**

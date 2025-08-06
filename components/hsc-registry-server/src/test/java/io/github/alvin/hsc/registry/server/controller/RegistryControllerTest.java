@@ -1,5 +1,6 @@
 package io.github.alvin.hsc.registry.server.controller;
 
+import io.github.alvin.hsc.registry.server.config.ControllerTestConfig;
 import io.github.alvin.hsc.registry.server.model.HealthCheckConfig;
 import io.github.alvin.hsc.registry.server.model.HealthCheckType;
 import io.github.alvin.hsc.registry.server.model.InstanceStatus;
@@ -11,6 +12,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.reactive.WebFluxTest;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
+import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import reactor.core.publisher.Flux;
@@ -31,6 +33,7 @@ import static org.mockito.Mockito.when;
  * @author Alvin
  */
 @WebFluxTest(RegistryController.class)
+@Import(ControllerTestConfig.class)
 class RegistryControllerTest {
 
     @Autowired

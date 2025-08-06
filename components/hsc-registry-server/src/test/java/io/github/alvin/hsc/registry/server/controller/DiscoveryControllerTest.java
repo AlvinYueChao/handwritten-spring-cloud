@@ -1,5 +1,6 @@
 package io.github.alvin.hsc.registry.server.controller;
 
+import io.github.alvin.hsc.registry.server.config.ControllerTestConfig;
 import io.github.alvin.hsc.registry.server.controller.DiscoveryController.DiscoveryResponse;
 import io.github.alvin.hsc.registry.server.model.InstanceStatus;
 import io.github.alvin.hsc.registry.server.model.ServiceCatalog;
@@ -10,6 +11,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.context.annotation.Import;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import reactor.core.publisher.Flux;
@@ -30,6 +32,7 @@ import static org.mockito.Mockito.when;
  * @author Alvin
  */
 @ExtendWith(MockitoExtension.class)
+@Import(ControllerTestConfig.class)
 class DiscoveryControllerTest {
 
     @Mock

@@ -1,5 +1,6 @@
 package io.github.alvin.hsc.registry.server.controller;
 
+import io.github.alvin.hsc.registry.server.config.ControllerTestConfig;
 import io.github.alvin.hsc.registry.server.model.ServiceEvent;
 import io.github.alvin.hsc.registry.server.model.ServiceEventType;
 import io.github.alvin.hsc.registry.server.model.ServiceInstance;
@@ -10,6 +11,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.context.annotation.Import;
 import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
 
@@ -26,6 +28,7 @@ import static org.mockito.Mockito.*;
  * @author Alvin
  */
 @ExtendWith(MockitoExtension.class)
+@Import(ControllerTestConfig.class)
 class ServiceEventControllerTest {
     
     @Mock

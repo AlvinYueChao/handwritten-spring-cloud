@@ -27,9 +27,17 @@ hsc:
         type: memory
         eviction-interval: 60s
       security:
-        enabled: false
-        username: admin
-        password: admin
+        enabled: true
+        api-key: hsc-registry-default-key-2024
+        header-name: X-Registry-API-Key
+        query-param-name: api_key
+        public-paths:
+          - /actuator/health
+          - /actuator/info
+          - /actuator/prometheus
+          - /management/info
+        auth-error-code: AUTH_001
+        auth-error-message: API key authentication required
       monitoring:
         metrics-enabled: true
         health-endpoint: /actuator/health

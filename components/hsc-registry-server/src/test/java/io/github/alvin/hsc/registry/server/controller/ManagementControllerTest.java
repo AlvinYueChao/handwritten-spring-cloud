@@ -1,5 +1,6 @@
 package io.github.alvin.hsc.registry.server.controller;
 
+import io.github.alvin.hsc.registry.server.config.ControllerTestConfig;
 import io.github.alvin.hsc.registry.server.model.*;
 import io.github.alvin.hsc.registry.server.service.RegistryService;
 import io.github.alvin.hsc.registry.server.service.DiscoveryService;
@@ -9,6 +10,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.context.annotation.Import;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -29,6 +31,7 @@ import static org.mockito.Mockito.when;
  * @author Alvin
  */
 @ExtendWith(MockitoExtension.class)
+@Import(ControllerTestConfig.class)
 class ManagementControllerTest {
 
     @Mock
