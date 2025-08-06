@@ -5,6 +5,10 @@ import io.github.alvin.hsc.registry.server.model.ServiceRegistration;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+
 /**
  * Registry Service Interface
  * 服务注册接口
@@ -19,7 +23,7 @@ public interface RegistryService {
      * @param registration 服务注册信息
      * @return 注册后的服务实例
      */
-    Mono<ServiceInstance> register(ServiceRegistration registration);
+    Mono<ServiceInstance> register(@Valid @NotNull ServiceRegistration registration);
 
     /**
      * 注销服务实例
@@ -28,7 +32,7 @@ public interface RegistryService {
      * @param instanceId 实例ID
      * @return 注销结果
      */
-    Mono<Void> deregister(String serviceId, String instanceId);
+    Mono<Void> deregister(@NotBlank String serviceId, @NotBlank String instanceId);
 
     /**
      * 续约服务实例
@@ -37,7 +41,7 @@ public interface RegistryService {
      * @param instanceId 实例ID
      * @return 续约后的服务实例
      */
-    Mono<ServiceInstance> renew(String serviceId, String instanceId);
+    Mono<ServiceInstance> renew(@NotBlank String serviceId, @NotBlank String instanceId);
 
     /**
      * 获取指定服务的所有实例
@@ -45,7 +49,7 @@ public interface RegistryService {
      * @param serviceId 服务ID
      * @return 服务实例列表
      */
-    Flux<ServiceInstance> getInstances(String serviceId);
+    Flux<ServiceInstance> getInstances(@NotBlank String serviceId);
 
     /**
      * 获取所有已注册的服务名称

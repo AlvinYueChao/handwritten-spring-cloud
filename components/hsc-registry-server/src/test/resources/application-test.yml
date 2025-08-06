@@ -1,26 +1,50 @@
-server:
-  port: 0
+# Test configuration for hsc-registry-server
+# 测试环境配置
 
-spring:
-  application:
-    name: hsc-registry-server-test
-  main:
-    allow-bean-definition-overriding: true
+server:
+  port: 0  # 随机端口
+
+logging:
+  level:
+    io.github.alvin.hsc.registry.server: DEBUG
+    org.springframework.web: DEBUG
+  pattern:
+    console: "%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n"
 
 hsc:
   registry:
     server:
-      port: 0
+      # 健康检查配置
+      health-check:
+        enabled: true
+        default-interval: 10s
+        default-timeout: 3s
+        max-retry: 2
+        
+      # 存储配置
+      storage:
+        type: memory
+        eviction-interval: 30s
+        
+      # 集群配置（测试环境禁用）
       cluster:
         enabled: false
-      health-check:
-        enabled: false
+        
+      # 安全配置（测试环境禁用）
       security:
         enabled: false
+        
+      # 监控配置
       monitoring:
-        metrics-enabled: false
+        metrics-enabled: true
+        health-endpoint: /actuator/health
 
-logging:
-  level:
-    io.github.alvin.hsc.registry.server: INFO
-    org.springframework: WARN
+# Spring Boot Actuator
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics
+  endpoint:
+    health:
+      show-details: always

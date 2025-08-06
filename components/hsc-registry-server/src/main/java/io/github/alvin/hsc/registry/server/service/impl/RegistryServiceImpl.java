@@ -51,7 +51,7 @@ public class RegistryServiceImpl implements RegistryService {
     }
     
     @Override
-    public Mono<ServiceInstance> register(@Valid @NotNull ServiceRegistration registration) {
+    public Mono<ServiceInstance> register(ServiceRegistration registration) {
         /*
         onErrorMap 是Project Reactor中Mono流的一个错误处理操作符。它的作用是：
         条件性转换异常：
@@ -109,7 +109,7 @@ public class RegistryServiceImpl implements RegistryService {
     }
     
     @Override
-    public Mono<Void> deregister(@NotBlank String serviceId, @NotBlank String instanceId) {
+    public Mono<Void> deregister(String serviceId, String instanceId) {
         return Mono.<Void>fromRunnable(() -> {
             logger.info("Deregistering service instance: {} - {}", serviceId, instanceId);
             
@@ -135,7 +135,7 @@ public class RegistryServiceImpl implements RegistryService {
     }
     
     @Override
-    public Mono<ServiceInstance> renew(@NotBlank String serviceId, @NotBlank String instanceId) {
+    public Mono<ServiceInstance> renew(String serviceId, String instanceId) {
         return Mono.fromCallable(() -> {
             logger.debug("Renewing service instance: {} - {}", serviceId, instanceId);
             
@@ -165,7 +165,7 @@ public class RegistryServiceImpl implements RegistryService {
     }
     
     @Override
-    public Flux<ServiceInstance> getInstances(@NotBlank String serviceId) {
+    public Flux<ServiceInstance> getInstances(String serviceId) {
         return Mono.fromCallable(() -> {
             logger.debug("Getting instances for service: {}", serviceId);
             

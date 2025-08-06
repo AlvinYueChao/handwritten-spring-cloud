@@ -19,6 +19,13 @@ dependencies {
     // 网络通信
     implementation libs.bundles.spring.boot.webflux
     
+    // 监控指标
+    implementation libs.bundles.monitoring
+    implementation libs.bundles.actuator
+    
+    // AOP 支持
+    implementation libs.bundles.aspectj
+    
     // Groovy 支持
     implementation libs.bundles.groovy.full
     
