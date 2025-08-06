@@ -54,7 +54,7 @@ public class DiscoveryServiceImpl implements DiscoveryService {
     }
     
     @Override
-    public Flux<ServiceInstance> discover(@NotBlank String serviceId) {
+    public Flux<ServiceInstance> discover(String serviceId) {
         return Mono.fromCallable(() -> {
             logger.debug("Discovering all instances for service: {}", serviceId);
             
@@ -73,7 +73,7 @@ public class DiscoveryServiceImpl implements DiscoveryService {
     }
     
     @Override
-    public Flux<ServiceInstance> discoverHealthy(@NotBlank String serviceId) {
+    public Flux<ServiceInstance> discoverHealthy(String serviceId) {
         return Mono.fromCallable(() -> {
             logger.debug("Discovering healthy instances for service: {}", serviceId);
             
@@ -118,7 +118,7 @@ public class DiscoveryServiceImpl implements DiscoveryService {
     }
     
     @Override
-    public Flux<ServiceEvent> watchService(@NotBlank String serviceId) {
+    public Flux<ServiceEvent> watchService(String serviceId) {
         return Mono.fromCallable(() -> {
             logger.debug("Starting to watch service: {}", serviceId);
             

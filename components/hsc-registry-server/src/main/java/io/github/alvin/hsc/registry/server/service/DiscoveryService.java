@@ -6,6 +6,8 @@ import io.github.alvin.hsc.registry.server.model.ServiceEvent;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import jakarta.validation.constraints.NotBlank;
+
 /**
  * Discovery Service Interface
  * 服务发现接口
@@ -20,7 +22,7 @@ public interface DiscoveryService {
      * @param serviceId 服务ID
      * @return 服务实例列表
      */
-    Flux<ServiceInstance> discover(String serviceId);
+    Flux<ServiceInstance> discover(@NotBlank String serviceId);
 
     /**
      * 发现指定服务的健康实例
@@ -28,7 +30,7 @@ public interface DiscoveryService {
      * @param serviceId 服务ID
      * @return 健康的服务实例列表
      */
-    Flux<ServiceInstance> discoverHealthy(String serviceId);
+    Flux<ServiceInstance> discoverHealthy(@NotBlank String serviceId);
 
     /**
      * 获取服务目录
@@ -43,5 +45,5 @@ public interface DiscoveryService {
      * @param serviceId 服务ID
      * @return 服务变更事件流
      */
-    Flux<ServiceEvent> watchService(String serviceId);
+    Flux<ServiceEvent> watchService(@NotBlank String serviceId);
 }
