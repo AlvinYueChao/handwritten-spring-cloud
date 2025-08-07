@@ -12,12 +12,9 @@ dependencies {
     // 项目内部依赖
     implementation project(':components:hsc-core')
     
-    // Spring Boot Web
-    implementation libs.bundles.spring.boot.web
-    implementation libs.spring.boot.starter.validation
-    
-    // 网络通信
+    // Spring Boot WebFlux (移除Web依赖避免冲突)
     implementation libs.bundles.spring.boot.webflux
+    implementation libs.spring.boot.starter.validation
     
     // 监控指标
     implementation libs.bundles.monitoring

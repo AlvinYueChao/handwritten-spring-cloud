@@ -29,6 +29,9 @@ class RegistryControllerIntegrationTest {
 
     @Autowired
     private WebTestClient webTestClient;
+    
+    private static final String VALID_API_KEY = "test-integration-key-2024";
+    private static final String API_KEY_HEADER = "X-Registry-API-Key";
 
     @Test
     void testCompleteRegistrationFlow() {
@@ -59,6 +62,7 @@ class RegistryControllerIntegrationTest {
         // 2. 注册服务实例
         webTestClient.post()
                 .uri("/api/v1/registry/services/{serviceId}/instances", serviceId)
+                .header(API_KEY_HEADER, VALID_API_KEY)
                 .contentType(MediaType.APPLICATION_JSON)
                 .bodyValue(registration)
                 .exchange()
@@ -74,6 +78,7 @@ class RegistryControllerIntegrationTest {
         // 3. 验证服务列表包含新注册的服务
         webTestClient.get()
                 .uri("/api/v1/registry/services")
+                .header(API_KEY_HEADER, VALID_API_KEY)
                 .exchange()
                 .expectStatus().isOk()
                 .expectBody()
@@ -83,6 +88,7 @@ class RegistryControllerIntegrationTest {
         // 4. 获取服务实例列表
         webTestClient.get()
                 .uri("/api/v1/registry/services/{serviceId}/instances", serviceId)
+                .header(API_KEY_HEADER, VALID_API_KEY)
                 .exchange()
                 .expectStatus().isOk()
                 .expectBodyList(ServiceInstance.class)
@@ -98,6 +104,7 @@ class RegistryControllerIntegrationTest {
         // 5. 心跳续约
         webTestClient.put()
                 .uri("/api/v1/registry/services/{serviceId}/instances/{instanceId}/heartbeat", serviceId, instanceId)
+                .header(API_KEY_HEADER, VALID_API_KEY)
                 .exchange()
                 .expectStatus().isOk()
                 .expectBody(ServiceInstance.class)
@@ -109,12 +116,14 @@ class RegistryControllerIntegrationTest {
         // 6. 注销服务实例
         webTestClient.delete()
                 .uri("/api/v1/registry/services/{serviceId}/instances/{instanceId}", serviceId, instanceId)
+                .header(API_KEY_HEADER, VALID_API_KEY)
                 .exchange()
                 .expectStatus().isNoContent();
 
         // 7. 验证服务实例已被移除
         webTestClient.get()
                 .uri("/api/v1/registry/services/{serviceId}/instances", serviceId)
+                .header(API_KEY_HEADER, VALID_API_KEY)
                 .exchange()
                 .expectStatus().isOk()
                 .expectBodyList(ServiceInstance.class)
@@ -136,6 +145,7 @@ class RegistryControllerIntegrationTest {
 
             webTestClient.post()
                     .uri("/api/v1/registry/services/{serviceId}/instances", serviceId)
+                    .header(API_KEY_HEADER, VALID_API_KEY)
                     .contentType(MediaType.APPLICATION_JSON)
                     .bodyValue(registration)
                     .exchange()
@@ -145,6 +155,7 @@ class RegistryControllerIntegrationTest {
         // 验证所有实例都已注册
         webTestClient.get()
                 .uri("/api/v1/registry/services/{serviceId}/instances", serviceId)
+                .header(API_KEY_HEADER, VALID_API_KEY)
                 .exchange()
                 .expectStatus().isOk()
                 .expectBodyList(ServiceInstance.class)
@@ -161,6 +172,7 @@ class RegistryControllerIntegrationTest {
             String instanceId = "instance-" + String.format("%03d", i);
             webTestClient.delete()
                     .uri("/api/v1/registry/services/{serviceId}/instances/{instanceId}", serviceId, instanceId)
+                    .header(API_KEY_HEADER, VALID_API_KEY)
                     .exchange()
                     .expectStatus().isNoContent();
         }
@@ -183,6 +195,7 @@ class RegistryControllerIntegrationTest {
 
             webTestClient.post()
                     .uri("/api/v1/registry/services/{serviceId}/instances", serviceId)
+                    .header(API_KEY_HEADER, VALID_API_KEY)
                     .contentType(MediaType.APPLICATION_JSON)
                     .bodyValue(registration)
                     .exchange()
@@ -192,6 +205,7 @@ class RegistryControllerIntegrationTest {
         // 验证服务列表包含所有注册的服务
         webTestClient.get()
                 .uri("/api/v1/registry/services")
+                .header(API_KEY_HEADER, VALID_API_KEY)
                 .exchange()
                 .expectStatus().isOk()
                 .expectBody()
@@ -203,6 +217,7 @@ class RegistryControllerIntegrationTest {
             webTestClient.delete()
                     .uri("/api/v1/registry/services/{serviceId}/instances/{instanceId}", 
                          serviceId, serviceId + "-instance-001")
+                    .header(API_KEY_HEADER, VALID_API_KEY)
                     .exchange()
                     .expectStatus().isNoContent();
         }
@@ -219,6 +234,7 @@ class RegistryControllerIntegrationTest {
 
         webTestClient.post()
                 .uri("/api/v1/registry/services/invalid-service/instances")
+                .header(API_KEY_HEADER, VALID_API_KEY)
                 .contentType(MediaType.APPLICATION_JSON)
                 .bodyValue(invalidRegistration)
                 .exchange()
@@ -232,6 +248,7 @@ class RegistryControllerIntegrationTest {
         // 对不存在的实例进行心跳续约
         webTestClient.put()
                 .uri("/api/v1/registry/services/non-existent-service/instances/non-existent-instance/heartbeat")
+                .header(API_KEY_HEADER, VALID_API_KEY)
                 .exchange()
                 .expectStatus().isNotFound();
     }
@@ -241,6 +258,7 @@ class RegistryControllerIntegrationTest {
         // 注销不存在的实例（应该成功，因为结果是幂等的）
         webTestClient.delete()
                 .uri("/api/v1/registry/services/non-existent-service/instances/non-existent-instance")
+                .header(API_KEY_HEADER, VALID_API_KEY)
                 .exchange()
                 .expectStatus().isNoContent();
     }
@@ -260,6 +278,7 @@ class RegistryControllerIntegrationTest {
         // 第一次注册
         webTestClient.post()
                 .uri("/api/v1/registry/services/{serviceId}/instances", serviceId)
+                .header(API_KEY_HEADER, VALID_API_KEY)
                 .contentType(MediaType.APPLICATION_JSON)
                 .bodyValue(registration)
                 .exchange()
@@ -269,6 +288,7 @@ class RegistryControllerIntegrationTest {
         registration.setMetadata(Map.of("version", "1.1.0")); // 更新版本
         webTestClient.post()
                 .uri("/api/v1/registry/services/{serviceId}/instances", serviceId)
+                .header(API_KEY_HEADER, VALID_API_KEY)
                 .contentType(MediaType.APPLICATION_JSON)
                 .bodyValue(registration)
                 .exchange()
@@ -281,6 +301,7 @@ class RegistryControllerIntegrationTest {
         // 验证只有一个实例
         webTestClient.get()
                 .uri("/api/v1/registry/services/{serviceId}/instances", serviceId)
+                .header(API_KEY_HEADER, VALID_API_KEY)
                 .exchange()
                 .expectStatus().isOk()
                 .expectBodyList(ServiceInstance.class)
@@ -289,6 +310,7 @@ class RegistryControllerIntegrationTest {
         // 清理
         webTestClient.delete()
                 .uri("/api/v1/registry/services/{serviceId}/instances/{instanceId}", serviceId, instanceId)
+                .header(API_KEY_HEADER, VALID_API_KEY)
                 .exchange()
                 .expectStatus().isNoContent();
     }
