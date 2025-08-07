@@ -37,6 +37,9 @@ class DiscoveryControllerIntegrationTest {
 
     @Autowired
     private RegistryStorage registryStorage;
+    
+    private static final String VALID_API_KEY = "test-integration-key-2024";
+    private static final String API_KEY_HEADER = "X-Registry-API-Key";
 
     @BeforeEach
     void setUp() {
@@ -53,6 +56,7 @@ class DiscoveryControllerIntegrationTest {
         // 测试发现所有实例
         webTestClient.get()
                 .uri("/api/v1/discovery/services/{serviceId}/instances", serviceId)
+                .header(API_KEY_HEADER, VALID_API_KEY)
                 .exchange()
                 .expectStatus().isOk()
                 .expectBody(DiscoveryResponse.class)
@@ -72,6 +76,7 @@ class DiscoveryControllerIntegrationTest {
         // 测试只发现健康实例
         webTestClient.get()
                 .uri("/api/v1/discovery/services/{serviceId}/instances?healthyOnly=true", serviceId)
+                .header(API_KEY_HEADER, VALID_API_KEY)
                 .exchange()
                 .expectStatus().isOk()
                 .expectBody(DiscoveryResponse.class)
@@ -92,6 +97,7 @@ class DiscoveryControllerIntegrationTest {
         // 测试按状态过滤
         webTestClient.get()
                 .uri("/api/v1/discovery/services/{serviceId}/instances?status=UP", serviceId)
+                .header(API_KEY_HEADER, VALID_API_KEY)
                 .exchange()
                 .expectStatus().isOk()
                 .expectBody(DiscoveryResponse.class)
@@ -105,6 +111,7 @@ class DiscoveryControllerIntegrationTest {
         // 测试过滤DOWN状态的实例
         webTestClient.get()
                 .uri("/api/v1/discovery/services/{serviceId}/instances?status=DOWN", serviceId)
+                .header(API_KEY_HEADER, VALID_API_KEY)
                 .exchange()
                 .expectStatus().isOk()
                 .expectBody(DiscoveryResponse.class)
@@ -124,6 +131,7 @@ class DiscoveryControllerIntegrationTest {
         // 测试按可用区过滤
         webTestClient.get()
                 .uri("/api/v1/discovery/services/{serviceId}/instances?zone=us-east-1a", serviceId)
+                .header(API_KEY_HEADER, VALID_API_KEY)
                 .exchange()
                 .expectStatus().isOk()
                 .expectBody(DiscoveryResponse.class)
@@ -144,6 +152,7 @@ class DiscoveryControllerIntegrationTest {
         // 测试按版本过滤
         webTestClient.get()
                 .uri("/api/v1/discovery/services/{serviceId}/instances?version=1.0.0", serviceId)
+                .header(API_KEY_HEADER, VALID_API_KEY)
                 .exchange()
                 .expectStatus().isOk()
                 .expectBody(DiscoveryResponse.class)
@@ -164,6 +173,7 @@ class DiscoveryControllerIntegrationTest {
         // 测试多个过滤条件组合
         webTestClient.get()
                 .uri("/api/v1/discovery/services/{serviceId}/instances?healthyOnly=true&zone=us-east-1a&version=1.0.0", serviceId)
+                .header(API_KEY_HEADER, VALID_API_KEY)
                 .exchange()
                 .expectStatus().isOk()
                 .expectBody(DiscoveryResponse.class)
@@ -186,6 +196,7 @@ class DiscoveryControllerIntegrationTest {
         // 测试获取服务目录
         webTestClient.get()
                 .uri("/api/v1/discovery/catalog")
+                .header(API_KEY_HEADER, VALID_API_KEY)
                 .exchange()
                 .expectStatus().isOk()
                 .expectBody(ServiceCatalog.class)
@@ -205,6 +216,7 @@ class DiscoveryControllerIntegrationTest {
         // 测试只获取健康实例的服务目录
         webTestClient.get()
                 .uri("/api/v1/discovery/catalog?healthyOnly=true")
+                .header(API_KEY_HEADER, VALID_API_KEY)
                 .exchange()
                 .expectStatus().isOk()
                 .expectBody(ServiceCatalog.class)
@@ -226,6 +238,7 @@ class DiscoveryControllerIntegrationTest {
         // 测试获取服务名称列表
         webTestClient.get()
                 .uri("/api/v1/discovery/services")
+                .header(API_KEY_HEADER, VALID_API_KEY)
                 .exchange()
                 .expectStatus().isOk()
                 .expectBody()
@@ -243,6 +256,7 @@ class DiscoveryControllerIntegrationTest {
         // 测试获取健康实例
         webTestClient.get()
                 .uri("/api/v1/discovery/services/{serviceId}/healthy-instances", serviceId)
+                .header(API_KEY_HEADER, VALID_API_KEY)
                 .exchange()
                 .expectStatus().isOk()
                 .expectBody(DiscoveryResponse.class)
@@ -259,6 +273,7 @@ class DiscoveryControllerIntegrationTest {
         // 测试发现不存在的服务
         webTestClient.get()
                 .uri("/api/v1/discovery/services/non-existent-service/instances")
+                .header(API_KEY_HEADER, VALID_API_KEY)
                 .exchange()
                 .expectStatus().isOk()
                 .expectBody(DiscoveryResponse.class)
@@ -274,14 +289,16 @@ class DiscoveryControllerIntegrationTest {
         // 测试无效的服务ID - 空字符串会导致路径不匹配
         webTestClient.get()
                 .uri("/api/v1/discovery/services//instances")
+                .header(API_KEY_HEADER, VALID_API_KEY)
                 .exchange()
-                .expectStatus().is5xxServerError(); // 路径不匹配会被静态资源处理器处理，导致500错误
+                .expectStatus().is5xxServerError(); // 空路径段会导致500 NoResourceFoundException
 
         // 测试包含无效字符的服务ID
         webTestClient.get()
                 .uri("/api/v1/discovery/services/invalid@service/instances")
+                .header(API_KEY_HEADER, VALID_API_KEY)
                 .exchange()
-                .expectStatus().isBadRequest(); // 控制器内部验证会返回400
+                .expectStatus().isBadRequest(); // 控制器会验证服务ID格式，返回400
     }
 
     @Test
@@ -293,6 +310,7 @@ class DiscoveryControllerIntegrationTest {
         // 测试无效的状态过滤器
         webTestClient.get()
                 .uri("/api/v1/discovery/services/{serviceId}/instances?status=INVALID_STATUS", serviceId)
+                .header(API_KEY_HEADER, VALID_API_KEY)
                 .exchange()
                 .expectStatus().isOk()
                 .expectBody(DiscoveryResponse.class)
@@ -307,6 +325,7 @@ class DiscoveryControllerIntegrationTest {
         // 测试空的服务目录
         webTestClient.get()
                 .uri("/api/v1/discovery/catalog")
+                .header(API_KEY_HEADER, VALID_API_KEY)
                 .exchange()
                 .expectStatus().isOk()
                 .expectBody(ServiceCatalog.class)
@@ -330,6 +349,7 @@ class DiscoveryControllerIntegrationTest {
         // 2. 验证服务发现能找到所有实例
         webTestClient.get()
                 .uri("/api/v1/discovery/services/{serviceId}/instances", serviceId)
+                .header(API_KEY_HEADER, VALID_API_KEY)
                 .exchange()
                 .expectStatus().isOk()
                 .expectBody(DiscoveryResponse.class)
@@ -340,6 +360,7 @@ class DiscoveryControllerIntegrationTest {
         // 3. 验证服务目录包含新服务
         webTestClient.get()
                 .uri("/api/v1/discovery/catalog")
+                .header(API_KEY_HEADER, VALID_API_KEY)
                 .exchange()
                 .expectStatus().isOk()
                 .expectBody(ServiceCatalog.class)
@@ -351,6 +372,7 @@ class DiscoveryControllerIntegrationTest {
         // 4. 验证健康实例发现
         webTestClient.get()
                 .uri("/api/v1/discovery/services/{serviceId}/healthy-instances", serviceId)
+                .header(API_KEY_HEADER, VALID_API_KEY)
                 .exchange()
                 .expectStatus().isOk()
                 .expectBody(DiscoveryResponse.class)
@@ -434,6 +456,7 @@ class DiscoveryControllerIntegrationTest {
 
         webTestClient.post()
                 .uri("/api/v1/registry/services/{serviceId}/instances", serviceId)
+                .header(API_KEY_HEADER, VALID_API_KEY)
                 .contentType(MediaType.APPLICATION_JSON)
                 .bodyValue(registration)
                 .exchange()
