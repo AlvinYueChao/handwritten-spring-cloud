@@ -11,7 +11,6 @@ import java.time.Duration;
  * 
  * @author Alvin
  */
-@Component
 @ConfigurationProperties(prefix = "hsc.registry.server.health-check")
 public class HealthCheckProperties {
 

@@ -12,20 +12,33 @@ spring:
 hsc:
   registry:
     server:
+      # 服务器配置
       port: 8761
       context-path: /
+      
+      # 集群配置
       cluster:
         enabled: false
         nodes: []
         sync-interval: 30s
+        
+      # 健康检查配置
       health-check:
         enabled: true
         default-interval: 30s
         default-timeout: 5s
         max-retry: 3
+        instance-expiration-threshold: 90s
+        thread-pool-size: 10
+        expiration-check-interval: 30s
+        task-sync-interval: 60s
+        
+      # 存储配置
       storage:
         type: memory
         eviction-interval: 60s
+        
+      # 安全配置
       security:
         enabled: true
         api-key: hsc-registry-default-key-2024
@@ -38,9 +51,13 @@ hsc:
           - /management/info
         auth-error-code: AUTH_001
         auth-error-message: API key authentication required
+        
+      # 监控配置
       monitoring:
         metrics-enabled: true
         health-endpoint: /actuator/health
+        detailed-health-enabled: true
+        metrics-interval: 30s
 
 management:
   endpoints:
