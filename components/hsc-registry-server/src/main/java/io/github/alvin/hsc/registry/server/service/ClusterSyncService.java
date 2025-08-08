@@ -1,8 +1,6 @@
 package io.github.alvin.hsc.registry.server.service;
 
 import io.github.alvin.hsc.registry.server.model.ServiceEvent;
-import io.github.alvin.hsc.registry.server.model.ClusterStatus;
-import io.github.alvin.hsc.registry.server.model.ClusterNode;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -10,12 +8,14 @@ import reactor.core.publisher.Mono;
  * Cluster Sync Service Interface
  * 集群同步服务接口
  * 
+ * 专注于集群间的数据同步和事件传播
+ * 
  * @author Alvin
  */
 public interface ClusterSyncService {
 
     /**
-     * 同步事件到集群
+     * 同步事件到集群中的其他节点
      * 
      * @param event 服务事件
      * @return 同步结果
@@ -23,24 +23,30 @@ public interface ClusterSyncService {
     Mono<Void> syncToCluster(ServiceEvent event);
 
     /**
-     * 从集群接收事件
+     * 从集群中的其他节点接收事件
      * 
      * @return 服务事件流
      */
     Flux<ServiceEvent> receiveFromCluster();
 
     /**
-     * 获取集群状态
+     * 启动集群同步服务
      * 
-     * @return 集群状态
+     * @return 启动结果
      */
-    Mono<ClusterStatus> getClusterStatus();
+    Mono<Void> startSync();
 
     /**
-     * 加入集群
+     * 停止集群同步服务
      * 
-     * @param node 集群节点
-     * @return 加入结果
+     * @return 停止结果
      */
-    Mono<Void> joinCluster(ClusterNode node);
+    Mono<Void> stopSync();
+
+    /**
+     * 处理从其他节点接收到的集群事件
+     * 
+     * @param event 服务事件
+     */
+    void handleClusterEvent(ServiceEvent event);
 }
